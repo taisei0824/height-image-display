@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>身長とサイズの画像表示</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #imageContainer img {
+      width: 200px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>身長を選択してください</h1>
+  <select id="heightSelector">
+    <option value="">-- 選択してください --</option>
+    <option value="157">157cm</option>
+    <option value="165">165cm</option>
+  </select>
+
+  <div id="imageContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
