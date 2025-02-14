@@ -2,12 +2,37 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>身長とサイズの画像表示</title>
+  <title>性別・身長とサイズの画像表示</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
     }
+    /* 選択ボタン用のコンテナ */
+    .selector-container {
+      margin-bottom: 20px;
+    }
+    .selector-container h2 {
+      margin-bottom: 10px;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+    .button-group button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      border-radius: 4px;
+    }
+    .button-group button.selected {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
+    /* 画像表示用 */
     #imageContainer img {
       width: 200px;
       margin: 10px;
@@ -17,7 +42,7 @@
     #imageContainer img:hover {
       transform: scale(1.05);
     }
-    /* モーダル全体のスタイル */
+    /* モーダル全体 */
     .modal {
       display: none; /* 初期は非表示 */
       position: fixed;
@@ -29,7 +54,7 @@
       overflow: hidden;
       background-color: rgba(0,0,0,0.8);
     }
-    /* モーダル内の画像 */
+    /* モーダル内画像 */
     .modal-content {
       display: block;
       max-width: 80%;
@@ -71,23 +96,37 @@
   </style>
 </head>
 <body>
-  <h1>身長を選択してください</h1>
-  <select id="heightSelector">
-    <option value="">-- 選択してください --</option>
-    <option value="157">157cm</option>
-    <option value="165">165cm</option>
-  </select>
-
+  <h1>性別と身長を選択してください</h1>
+  
+  <!-- 性別選択 -->
+  <div class="selector-container" id="genderContainer">
+    <h2>性別</h2>
+    <div class="button-group">
+      <button data-gender="male">男性</button>
+      <button data-gender="female">女性</button>
+    </div>
+  </div>
+  
+  <!-- 身長選択 -->
+  <div class="selector-container" id="heightContainer">
+    <h2>身長</h2>
+    <div class="button-group">
+      <button data-height="157">157cm</button>
+      <button data-height="165">165cm</button>
+    </div>
+  </div>
+  
+  <!-- 画像表示エリア -->
   <div id="imageContainer"></div>
 
-  <!-- モーダル -->
+  <!-- モーダル（拡大表示用） -->
   <div id="modal" class="modal">
     <span id="closeModal" class="close">&times;</span>
     <button id="prevBtn" class="nav-btn">&#10094;</button>
     <img id="modalImg" class="modal-content" src="" alt="">
     <button id="nextBtn" class="nav-btn">&#10095;</button>
   </div>
-
+  
   <script src="script.js"></script>
 </body>
 </html>
