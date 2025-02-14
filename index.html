@@ -11,6 +11,62 @@
     #imageContainer img {
       width: 200px;
       margin: 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    #imageContainer img:hover {
+      transform: scale(1.05);
+    }
+    /* モーダル全体のスタイル */
+    .modal {
+      display: none; /* 初期は非表示 */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: rgba(0,0,0,0.8);
+    }
+    /* モーダル内の画像 */
+    .modal-content {
+      display: block;
+      max-width: 80%;
+      max-height: 80%;
+      margin: 5% auto;
+      border-radius: 8px;
+    }
+    /* 閉じるボタン */
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    /* ナビゲーションボタン */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      background: rgba(0,0,0,0.5);
+      border: none;
+      font-size: 30px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    .nav-btn:hover {
+      background: rgba(0,0,0,0.8);
+    }
+    #prevBtn {
+      left: 20px;
+    }
+    #nextBtn {
+      right: 20px;
     }
   </style>
 </head>
@@ -23,6 +79,14 @@
   </select>
 
   <div id="imageContainer"></div>
+
+  <!-- モーダル -->
+  <div id="modal" class="modal">
+    <span id="closeModal" class="close">&times;</span>
+    <button id="prevBtn" class="nav-btn">&#10094;</button>
+    <img id="modalImg" class="modal-content" src="" alt="">
+    <button id="nextBtn" class="nav-btn">&#10095;</button>
+  </div>
 
   <script src="script.js"></script>
 </body>
