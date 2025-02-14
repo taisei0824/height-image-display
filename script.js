@@ -9,7 +9,7 @@ function updateImages(height) {
   sizes.forEach(size => {
     const img = document.createElement('img');
     // 画像パスを設定 (例: images/160/S.jpg)
-    img.src = `images/${height}/${size}_${height}.jpg`;
+    img.src = `images/${height}/${size}_${height}.png`;
     img.alt = `${height}cm ${size}`;
     container.appendChild(img);
   });
