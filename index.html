@@ -2,11 +2,13 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>性別・身長とサイズの画像表示</title>
+  <title>性別・身長とサイズの画像表示＆比較</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      font-size: 18px; /* 基本の文字サイズ */
+      text-align: center; /* 全体を中央揃え */
     }
     /* 選択ボタン用のコンテナ */
     .selector-container {
@@ -14,10 +16,18 @@
     }
     .selector-container h2 {
       margin-bottom: 10px;
+      font-size: 24px; /* 見やすいサイズに統一 */
+    }
+    .instruction {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 10px;
+      display: none; /* 初期は非表示 */
     }
     .button-group {
       display: flex;
       gap: 10px;
+      justify-content: center; /* ボタン群も中央揃え */
     }
     .button-group button {
       padding: 30px 60px;
@@ -32,14 +42,32 @@
       color: #fff;
       border-color: #007bff;
     }
-    /* 画像表示用 */
-    #imageContainer img {
-      width: 600px;
+    /* 比較用ブランドセクション */
+    .brand-section {
+      margin: 20px 0;
+    }
+    .brand-section h2 {
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+    .brand-section .button-group button {
+      padding: 20px 40px;
+      font-size: 20px;
+    }
+    /* 比較表示エリア */
+    #comparisonContainer {
+      margin-top: 30px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+    #comparisonContainer img {
+      width: 400px;
       margin: 10px;
       cursor: pointer;
       transition: transform 0.2s;
     }
-    #imageContainer img:hover {
+    #comparisonContainer img:hover {
       transform: scale(1.05);
     }
     /* モーダル全体 */
@@ -96,7 +124,7 @@
   </style>
 </head>
 <body>
-  <h1>性別と身長を選択してください</h1>
+  <h1>表示したい着用画像について以下を選択してください</h1>
   
   <!-- 性別選択 -->
   <div class="selector-container" id="genderContainer">
@@ -107,17 +135,40 @@
     </div>
   </div>
   
-  <!-- 身長選択 -->
+  <!-- 身長選択（性別選択後、対応するボタンが生成される） -->
   <div class="selector-container" id="heightContainer">
-    <h2>身長</h2>
-    <div class="button-group">
-      <button data-height="157">157cm</button>
-      <button data-height="165">165cm</button>
+    <!-- 性別選択後に案内文を表示 -->
+    <div id="heightInstruction" class="instruction">
+      <h2>身長</h2>
+    </div>
+    <div class="button-group" id="heightButtons">
+      <!-- 身長ボタンはJSで追加 -->
     </div>
   </div>
-  
-  <!-- 画像表示エリア -->
-  <div id="imageContainer"></div>
+
+  <!-- 「2つ選択して比較」表示 -->
+  <div id="comparePrompt" style="display:none;">
+    <h1>2つ選択して比較</h1>
+  </div>
+
+  <!-- ブランドごとのサイズ選択セクション -->
+  <div id="brandContainer" style="display:none;">
+    <div class="brand-section" id="unitedAthleSection">
+      <h2>United Athle</h2>
+      <div class="button-group" id="unitedAthleButtons">
+        <!-- サイズボタンはJSで追加 -->
+      </div>
+    </div>
+    <div class="brand-section" id="gildanSection">
+      <h2>GILDAN</h2>
+      <div class="button-group" id="gildanButtons">
+        <!-- サイズボタンはJSで追加 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 比較画像表示エリア -->
+  <div id="comparisonContainer" style="display:none;"></div>
 
   <!-- モーダル（拡大表示用） -->
   <div id="modal" class="modal">
