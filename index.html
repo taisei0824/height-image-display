@@ -2,32 +2,31 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>性別・身長とサイズの画像表示＆比較</title>
+  <title>性別・着用アイテム・身長とサイズの画像表示＆比較</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
-      font-size: 18px; /* 基本の文字サイズ */
-      text-align: center; /* 全体を中央揃え */
+      font-size: 18px;
+      text-align: center;
     }
-    /* 選択ボタン用のコンテナ */
     .selector-container {
       margin-bottom: 20px;
     }
     .selector-container h2 {
       margin-bottom: 10px;
-      font-size: 24px; /* 見やすいサイズに統一 */
+      font-size: 24px;
     }
     .instruction {
       font-size: 20px;
       color: #333;
       margin-bottom: 10px;
-      display: none; /* 初期は非表示 */
+      display: none;
     }
     .button-group {
       display: flex;
       gap: 10px;
-      justify-content: center; /* ボタン群も中央揃え */
+      justify-content: center;
     }
     .button-group button {
       padding: 30px 60px;
@@ -42,7 +41,6 @@
       color: #fff;
       border-color: #007bff;
     }
-    /* 比較用ブランドセクション */
     .brand-section {
       margin: 20px 0;
     }
@@ -54,7 +52,6 @@
       padding: 20px 40px;
       font-size: 20px;
     }
-    /* 比較表示エリア */
     #comparisonContainer {
       margin-top: 30px;
       display: flex;
@@ -70,9 +67,8 @@
     #comparisonContainer img:hover {
       transform: scale(1.05);
     }
-    /* モーダル全体 */
     .modal {
-      display: none; /* 初期は非表示 */
+      display: none;
       position: fixed;
       z-index: 1000;
       left: 0;
@@ -82,7 +78,6 @@
       overflow: hidden;
       background-color: rgba(0,0,0,0.8);
     }
-    /* モーダル内画像 */
     .modal-content {
       display: block;
       max-width: 80%;
@@ -90,7 +85,6 @@
       margin: 5% auto;
       border-radius: 8px;
     }
-    /* 閉じるボタン */
     .close {
       position: absolute;
       top: 20px;
@@ -100,7 +94,6 @@
       font-weight: bold;
       cursor: pointer;
     }
-    /* ナビゲーションボタン */
     .nav-btn {
       position: absolute;
       top: 50%;
@@ -134,10 +127,19 @@
       <button data-gender="female">女性</button>
     </div>
   </div>
+
+  <!-- 着用アイテム選択（性別選択後に表示） -->
+  <div class="selector-container" id="garmentContainer" style="display:none;">
+    <h2>着用アイテム</h2>
+    <div class="button-group">
+      <button data-garment="tshirt">Tシャツ</button>
+      <button data-garment="longT">ロンT</button>
+      <button data-garment="sweat">スウェット</button>
+    </div>
+  </div>
   
-  <!-- 身長選択（性別選択後、対応するボタンが生成される） -->
+  <!-- 身長選択 -->
   <div class="selector-container" id="heightContainer">
-    <!-- 性別選択後に案内文を表示 -->
     <div id="heightInstruction" class="instruction">
       <h2>身長</h2>
     </div>
