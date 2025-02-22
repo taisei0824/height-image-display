@@ -226,10 +226,7 @@ function openModal() {
 }
 
 function closeModal() {
-  const modal = document.getElementById('modal');
-  const modalImg = document.getElementById('modalImg');
-  modalImg.src = ""; // 画像をクリアしておく
-  modal.style.display = 'none';
+  document.getElementById('modal').style.display = 'none';
 }
 
 function updateModalImage() {
@@ -260,9 +257,9 @@ window.addEventListener('click', (event) => {
 });
 
 // --- URLパラメータからの復元（任意） ---
+// ※ページロード時に、必ずモーダルが非表示になっているよう初期化
 window.addEventListener('load', () => {
-  // 念のため、モーダルを非表示にしておく
-  document.getElementById('modal').style.display = 'none';
+  document.getElementById('modal').style.display = 'none'; // 追加：モーダルを初期状態で非表示に
   const params = new URLSearchParams(window.location.search);
   const gender = params.get('gender');
   const garment = params.get('garment');

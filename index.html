@@ -2,8 +2,6 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <!-- 追加: スマホ用のviewport設定 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>性別・着用アイテム・身長とサイズの画像表示＆比較</title>
   <style>
     body {
@@ -70,7 +68,7 @@
       transform: scale(1.05);
     }
     .modal {
-      display: none;
+      display: none; /* 初期は非表示 */
       position: fixed;
       z-index: 1000;
       left: 0;
@@ -89,8 +87,6 @@
       max-width: 80%;
       max-height: 80%;
       border-radius: 8px;
-      /* 追加: 画像が枠内に収まるように */
-      object-fit: contain;
     }
     .close {
       position: absolute;
@@ -184,6 +180,4 @@
     <button id="nextBtn" class="nav-btn">&#10095;</button>
   </div>
   
-  <script src="script.js"></script>
-</body>
-</html>
+  <script src
