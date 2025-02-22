@@ -226,7 +226,10 @@ function openModal() {
 }
 
 function closeModal() {
-  document.getElementById('modal').style.display = 'none';
+  const modal = document.getElementById('modal');
+  const modalImg = document.getElementById('modalImg');
+  modalImg.src = ""; // 画像をクリアしておく
+  modal.style.display = 'none';
 }
 
 function updateModalImage() {
@@ -258,6 +261,8 @@ window.addEventListener('click', (event) => {
 
 // --- URLパラメータからの復元（任意） ---
 window.addEventListener('load', () => {
+  // 念のため、モーダルを非表示にしておく
+  document.getElementById('modal').style.display = 'none';
   const params = new URLSearchParams(window.location.search);
   const gender = params.get('gender');
   const garment = params.get('garment');

@@ -2,6 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <!-- 追加: スマホ用のviewport設定 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>性別・着用アイテム・身長とサイズの画像表示＆比較</title>
   <style>
     body {
@@ -82,15 +84,14 @@
       justify-content: center;
       align-items: center;
     }
-
     .modal-content {
       display: block;
       max-width: 80%;
       max-height: 80%;
-      /* marginは不要になるので削除、または必要に応じて微調整 */
       border-radius: 8px;
+      /* 追加: 画像が枠内に収まるように */
+      object-fit: contain;
     }
-
     .close {
       position: absolute;
       top: 20px;
