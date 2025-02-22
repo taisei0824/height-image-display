@@ -67,7 +67,6 @@
     #comparisonContainer img:hover {
       transform: scale(1.05);
     }
-    /* モーダルは初期状態では非表示 */
     .modal {
       display: none;
       position: fixed;
@@ -79,16 +78,11 @@
       overflow: hidden;
       background-color: rgba(0,0,0,0.8);
     }
-    /* モーダルを開くときに open クラスを追加し、中央配置 */
-    .modal.open {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
     .modal-content {
       display: block;
       max-width: 80%;
       max-height: 80%;
+      margin: 5% auto;
       border-radius: 8px;
     }
     .close {
@@ -110,6 +104,9 @@
       font-size: 30px;
       padding: 10px 20px;
       cursor: pointer;
+    }
+    .nav-btn:hover {
+      background: rgba(0,0,0,0.8);
     }
     #prevBtn {
       left: 20px;

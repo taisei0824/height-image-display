@@ -3,10 +3,10 @@ const sizes = ['S', 'M', 'L', 'XL'];
 
 // 画像が存在する組み合わせ：
 // UnitedAthleのスウェットのみで、以下の身長が利用可能
-// 男性: 179cm、女性: 157cm
+// 男性: 170cm、女性: 157cm
 const heightOptions = {
   male: {
-    sweat: ['179']
+    sweat: ['170']
   },
   female: {
     sweat: ['157']
@@ -217,17 +217,16 @@ function updateComparison() {
 }
 
 // --- モーダル表示関連 ---
-// モーダルを開く際は .open クラスを追加し、display: flex にする
 function openModal() {
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modalImg');
   modalImg.src = modalImages[modalCurrentIndex].src;
   modalImg.alt = modalImages[modalCurrentIndex].alt;
-  modal.classList.add('open');
+  modal.style.display = 'block';
 }
-// 閉じるときは .open クラスを削除して非表示にする
+
 function closeModal() {
-  document.getElementById('modal').classList.remove('open');
+  document.getElementById('modal').style.display = 'none';
 }
 
 function updateModalImage() {
@@ -259,7 +258,6 @@ window.addEventListener('click', (event) => {
 
 // --- URLパラメータからの復元（任意） ---
 window.addEventListener('load', () => {
-  // 初期ロード時はモーダルは非表示（.open クラスがついていない状態）
   const params = new URLSearchParams(window.location.search);
   const gender = params.get('gender');
   const garment = params.get('garment');
