@@ -1,10 +1,16 @@
 // サイズの配列
 const sizes = ['S', 'M', 'L', 'XL'];
 
-// 性別ごとの身長オプション（例）
+// 画像が存在する組み合わせ：
+// UnitedAthleのスウェットのみで、以下の身長が利用可能
+// 男性: 170cm、女性: 157cm
 const heightOptions = {
-  male: ['157', '165'],
-  female: ['150', '160']
+  male: {
+    sweat: ['170']
+  },
+  female: {
+    sweat: ['157']
+  }
 };
 
 // 選択状態を保持する変数
@@ -65,9 +71,27 @@ document.querySelectorAll('#garmentContainer .button-group button').forEach(butt
     button.classList.add('selected');
     selectedGarment = button.getAttribute('data-garment');
 
-    // ガーメント選択後、身長選択を表示
-    document.getElementById('heightInstruction').style.display = 'block';
-    updateHeightButtons();
+    // 身長選択：選択された性別・ガーメントに対応する身長があれば表示する
+    if (
+      selectedGender &&
+      selectedGarment &&
+      heightOptions[selectedGender] &&
+      heightOptions[selectedGender][selectedGarment] &&
+      heightOptions[selectedGender][selectedGarment].length > 0
+    ) {
+      document.getElementById('heightInstruction').style.display = 'block';
+      updateHeightButtons();
+    } else {
+      // 利用可能な身長がなければ非表示
+      document.getElementById('heightInstruction').style.display = 'none';
+      document.getElementById('heightButtons').innerHTML = '';
+    }
+
+    // 身長選択後の比較・ブランド表示をリセット
+    document.getElementById('comparePrompt').style.display = 'none';
+    document.getElementById('brandContainer').style.display = 'none';
+    document.getElementById('comparisonContainer').style.display = 'none';
+    clearSizeSelections();
   });
 });
 
@@ -75,9 +99,11 @@ document.querySelectorAll('#garmentContainer .button-group button').forEach(butt
 function updateHeightButtons() {
   const container = document.getElementById('heightButtons');
   container.innerHTML = '';
-  if (!selectedGender) return;
-  const heights = heightOptions[selectedGender];
-  heights.forEach(height => {
+  if (!selectedGender || !selectedGarment) return;
+  const availableHeights = (heightOptions[selectedGender] && heightOptions[selectedGender][selectedGarment]) 
+                           ? heightOptions[selectedGender][selectedGarment] 
+                           : [];
+  availableHeights.forEach(height => {
     const btn = document.createElement('button');
     btn.textContent = `${height}cm`;
     btn.setAttribute('data-height', height);
@@ -105,7 +131,6 @@ function updateBrandButtons() {
     const btn = document.createElement('button');
     btn.textContent = size;
     btn.addEventListener('click', () => {
-      // 既に選択済みの場合は解除
       if (btn.classList.contains('selected')) {
         btn.classList.remove('selected');
         selectedUnitedIndices = selectedUnitedIndices.filter(i => i !== index);
@@ -115,7 +140,6 @@ function updateBrandButtons() {
           btn.classList.add('selected');
           selectedUnitedIndices.push(index);
         } else {
-          // 2つ既に選択されている場合は全体をクリアして新たに選択
           clearSizeSelections();
           btn.classList.add('selected');
           selectedUnitedIndices.push(index);
@@ -163,14 +187,14 @@ function updateComparison() {
   selectedOrder.forEach(brand => {
     if (brand === "UnitedAthle") {
       selectedUnitedIndices.forEach(i => {
-        const src = `images/UnitedAthle/${selectedGender}/${selectedHeight}/${sizes[i]}_${selectedHeight}.png`;
-        const alt = `${selectedHeight}cm ${sizes[i]} (United Athle)`;
+        const src = `images/UnitedAthle/${selectedGender}/${selectedGarment}/${selectedHeight}/${sizes[i]}_${selectedHeight}.png`;
+        const alt = `${selectedHeight}cm ${sizes[i]} (${brand})`;
         modalImages.push({ src, alt });
       });
     } else if (brand === "GILDAN") {
       selectedGildanIndices.forEach(i => {
-        const src = `images/GILDAN/${selectedGender}/${selectedHeight}/${sizes[i]}_${selectedHeight}.png`;
-        const alt = `${selectedHeight}cm ${sizes[i]} (GILDAN)`;
+        const src = `images/GILDAN/${selectedGender}/${selectedGarment}/${selectedHeight}/${sizes[i]}_${selectedHeight}.png`;
+        const alt = `${selectedHeight}cm ${sizes[i]} (${brand})`;
         modalImages.push({ src, alt });
       });
     }
@@ -236,13 +260,22 @@ window.addEventListener('click', (event) => {
 window.addEventListener('load', () => {
   const params = new URLSearchParams(window.location.search);
   const gender = params.get('gender');
+  const garment = params.get('garment');
   const height = params.get('height');
   if (gender) {
     selectedGender = gender;
     const genderBtn = document.querySelector(`#genderContainer button[data-gender="${gender}"]`);
     if (genderBtn) genderBtn.classList.add('selected');
     document.getElementById('garmentContainer').style.display = 'block';
-    updateHeightButtons();
+  }
+  if (garment) {
+    selectedGarment = garment;
+    const garmentBtn = document.querySelector(`#garmentContainer button[data-garment="${garment}"]`);
+    if (garmentBtn) garmentBtn.classList.add('selected');
+    if (selectedGender && selectedGarment && heightOptions[selectedGender] && heightOptions[selectedGender][selectedGarment] && heightOptions[selectedGender][selectedGarment].length > 0) {
+      document.getElementById('heightInstruction').style.display = 'block';
+      updateHeightButtons();
+    }
   }
   if (height) {
     selectedHeight = height;
