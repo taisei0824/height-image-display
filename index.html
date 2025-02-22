@@ -77,14 +77,20 @@
       height: 100%;
       overflow: hidden;
       background-color: rgba(0,0,0,0.8);
+      /* Flexboxで中央揃え */
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
+
     .modal-content {
       display: block;
       max-width: 80%;
       max-height: 80%;
-      margin: 5% auto;
+      /* marginは不要になるので削除、または必要に応じて微調整 */
       border-radius: 8px;
     }
+
     .close {
       position: absolute;
       top: 20px;
