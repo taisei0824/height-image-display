@@ -67,8 +67,9 @@
     #comparisonContainer img:hover {
       transform: scale(1.05);
     }
+    /* モーダルは初期状態では非表示 */
     .modal {
-      display: none; /* 初期は非表示 */
+      display: none;
       position: fixed;
       z-index: 1000;
       left: 0;
@@ -77,7 +78,9 @@
       height: 100%;
       overflow: hidden;
       background-color: rgba(0,0,0,0.8);
-      /* Flexboxで中央揃え */
+    }
+    /* モーダルを開くときに open クラスを追加し、中央配置 */
+    .modal.open {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -180,4 +183,6 @@
     <button id="nextBtn" class="nav-btn">&#10095;</button>
   </div>
   
-  <script src
+  <script src="script.js"></script>
+</body>
+</html>

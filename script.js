@@ -217,16 +217,17 @@ function updateComparison() {
 }
 
 // --- モーダル表示関連 ---
+// モーダルを開く際は .open クラスを追加し、display: flex にする
 function openModal() {
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modalImg');
   modalImg.src = modalImages[modalCurrentIndex].src;
   modalImg.alt = modalImages[modalCurrentIndex].alt;
-  modal.style.display = 'block';
+  modal.classList.add('open');
 }
-
+// 閉じるときは .open クラスを削除して非表示にする
 function closeModal() {
-  document.getElementById('modal').style.display = 'none';
+  document.getElementById('modal').classList.remove('open');
 }
 
 function updateModalImage() {
@@ -257,9 +258,8 @@ window.addEventListener('click', (event) => {
 });
 
 // --- URLパラメータからの復元（任意） ---
-// ※ページロード時に、必ずモーダルが非表示になっているよう初期化
 window.addEventListener('load', () => {
-  document.getElementById('modal').style.display = 'none'; // 追加：モーダルを初期状態で非表示に
+  // 初期ロード時はモーダルは非表示（.open クラスがついていない状態）
   const params = new URLSearchParams(window.location.search);
   const gender = params.get('gender');
   const garment = params.get('garment');
