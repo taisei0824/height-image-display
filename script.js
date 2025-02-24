@@ -51,22 +51,24 @@ document.querySelectorAll('#genderContainer .button-group button').forEach(butto
     button.classList.add('selected');
     selectedGender = button.getAttribute('data-gender');
 
-    // ガーメント選択エリアを表示
+    // ガーメント（着用アイテム）選択エリアを表示しつつリセット
     document.getElementById('garmentContainer').style.display = 'block';
-    // ガーメント選択の状態をリセット（ボタンのselectedクラスも除去）
     document.querySelectorAll('#garmentContainer .button-group button').forEach(btn => btn.classList.remove('selected'));
     selectedGarment = null;
     
-    // 身長、比較、ブランド選択の状態をリセット
+    // 身長選択状態のリセット（身長文字とボタンも消去）
     selectedHeight = null;
     document.getElementById('heightInstruction').style.display = 'none';
     document.getElementById('heightButtons').innerHTML = '';
+
+    // 比較・ブランド選択状態のリセット
     document.getElementById('comparePrompt').style.display = 'none';
     document.getElementById('brandContainer').style.display = 'none';
     document.getElementById('comparisonContainer').style.display = 'none';
     clearSizeSelections();
   });
 });
+
 
 
 // --- 着用アイテム（ガーメント）選択 ---
