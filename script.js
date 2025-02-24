@@ -46,23 +46,28 @@ function updateSelectedOrder() {
 // --- 性別選択 ---
 document.querySelectorAll('#genderContainer .button-group button').forEach(button => {
   button.addEventListener('click', () => {
+    // 性別ボタンの選択状態を更新
     document.querySelectorAll('#genderContainer .button-group button').forEach(btn => btn.classList.remove('selected'));
     button.classList.add('selected');
     selectedGender = button.getAttribute('data-gender');
 
     // ガーメント選択エリアを表示
     document.getElementById('garmentContainer').style.display = 'block';
-
-    // リセット：ガーメント、身長、ブランド選択
+    // ガーメント選択の状態をリセット（ボタンのselectedクラスも除去）
+    document.querySelectorAll('#garmentContainer .button-group button').forEach(btn => btn.classList.remove('selected'));
     selectedGarment = null;
+    
+    // 身長、比較、ブランド選択の状態をリセット
     selectedHeight = null;
     document.getElementById('heightInstruction').style.display = 'none';
+    document.getElementById('heightButtons').innerHTML = '';
     document.getElementById('comparePrompt').style.display = 'none';
     document.getElementById('brandContainer').style.display = 'none';
     document.getElementById('comparisonContainer').style.display = 'none';
     clearSizeSelections();
   });
 });
+
 
 // --- 着用アイテム（ガーメント）選択 ---
 document.querySelectorAll('#garmentContainer .button-group button').forEach(button => {
