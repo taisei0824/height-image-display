@@ -6,7 +6,7 @@ const sizes = ['S', 'M', 'L', 'XL'];
 // 男性: 179cm、女性: 157cm
 const heightOptions = {
   male: {
-    sweat: ['179']
+    sweat: ['170', '179']
   },
   female: {
     sweat: ['157']
