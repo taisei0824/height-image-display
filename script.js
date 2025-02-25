@@ -1,9 +1,5 @@
 // サイズの配列
 const sizes = ['S', 'M', 'L', 'XL'];
-
-// 画像が存在する組み合わせ：
-// UnitedAthleのスウェットのみで、以下の身長が利用可能
-// 男性: 179cm、女性: 157cm
 const heightOptions = {
   male: {
     sweat: ['170', '179']
