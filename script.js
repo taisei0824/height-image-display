@@ -290,11 +290,13 @@ window.addEventListener('load', () => {
   }
 });
 
-document.getElementById('backButton').addEventListener('click', function() {
-  if (window.history.length > 1) {
-    window.history.back();
-  } else {
-    // 履歴がない場合のフォールバック（必要に応じてリダイレクト先を変更）
-    window.location.href = 'https://kawarimono.kawaiishop.jp/blog/2025/01/31/000916';
-  }
+// トップページに戻るボタンの処理
+document.getElementById('homeButton').addEventListener('click', function() {
+  window.location.href = 'https://kawarimono.kawaiishop.jp/';
 });
+
+// 前のページに戻るボタンの処理
+document.getElementById('otherButton').addEventListener('click', function() {
+  window.location.href = 'https://kawarimono.kawaiishop.jp/blog/2025/01/31/000916';
+});
+
