@@ -296,7 +296,7 @@ document.getElementById('homeButton').addEventListener('click', function() {
 });
 
 // 前のページに戻るボタンの処理
-document.getElementById('buckButton').addEventListener('click', function() {
+document.getElementById('backButton').addEventListener('click', function() {
   window.location.href = 'https://kawarimono.kawaiishop.jp/blog/2025/01/31/000916';
 });
 
