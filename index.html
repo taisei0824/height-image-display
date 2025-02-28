@@ -6,10 +6,17 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
+      margin: 150px;
       font-size: 18px;
       text-align: center;
     }
+    .button-container {
+    display: flex;
+    justify-content: center; /* 横方向の中央揃え */
+    align-items: center;     /* 縦方向の中央揃え */
+    gap: 20px;               /* ボタン間の余白 */
+    margin: 20px 0;          /* コンテナ自体の上下マージン */
+  }
     .selector-container {
       margin-bottom: 20px;
     }
@@ -117,15 +124,10 @@
   </style>
 </head>
 <body>
-   <!-- トップページに戻るボタン -->
-   <button id="homeButton" style="position: fixed; top: 20px; left: 20px; padding: 10px 20px; font-size: 16px;">
-    トップページへ
-  </button>
-  
-  <!-- 別のリンクに飛ばすボタン -->
-  <button id="otherButton" style="position: fixed; top: 20px; right: 20px; padding: 10px 20px; font-size: 16px;">
-    前のページに戻る
-  </button>
+  <div class="button-container">
+     <button id="homeButton">トップページへ戻る</button>
+     <button id="backButton">前のページへ戻る</button>
+  </div>
   <h1>表示したい着用画像について以下を選択してください</h1>
   <h3>&#x26a0;まだ画像少ないです&lt;(_ _)&gt;（現在スウェットのみ）</h3>
   <h4>これからガンガン増やします</h4>
