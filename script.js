@@ -289,3 +289,12 @@ window.addEventListener('load', () => {
     updateBrandButtons();
   }
 });
+
+document.getElementById('backButton').addEventListener('click', function() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    // 履歴がない場合のフォールバック（必要に応じてリダイレクト先を変更）
+    window.location.href = 'https://kawarimono.kawaiishop.jp/blog/2025/01/31/000916';
+  }
+});
