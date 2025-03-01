@@ -295,8 +295,12 @@ document.getElementById('homeButton').addEventListener('click', function() {
   window.location.href = 'https://kawarimono.kawaiishop.jp/';
 });
 
-// 前のページに戻るボタンの処理
+// 戻るボタンのクリックイベント
 document.getElementById('backButton').addEventListener('click', function() {
-  window.location.href = 'https://kawarimono.kawaiishop.jp/blog/2025/01/31/000916';
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    // 履歴が無い場合のフォールバックとして指定の URL に遷移させる場合
+    window.location.href = 'https://kawarimono.kawaiishop.jp/'; 
+  }
 });
-
