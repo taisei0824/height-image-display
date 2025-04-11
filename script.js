@@ -2,6 +2,7 @@
 const sizes = ['S', 'M', 'L', 'XL'];
 const heightOptions = {
   male: {
+    tshirt: ['165', '173'],
     sweat: ['170', '179']
   },
   female: {
