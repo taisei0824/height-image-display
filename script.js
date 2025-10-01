@@ -6,6 +6,7 @@ const heightOptions = {
     sweat: ['170', '179']
   },
   female: {
+    tshirt: ['157', '166'],
     sweat: ['157']
   }
 };
