@@ -185,25 +185,42 @@ function updateBrandButtons() {
 }
 
 // --- 比較表示領域の更新 ---
-function updateComparison() {
+// --- 画像拡張子を解決する（.png / .PNG どちらでも対応）---
+async function resolveImagePath(basePath) {
+  const pngPath = basePath + '.png';
+  try {
+    const res = await fetch(pngPath, { method: 'HEAD' });
+    if (res.ok) return pngPath;
+  } catch (e) {}
+  return basePath + '.PNG';
+}
+
+// --- 比較表示領域の更新 ---
+async function updateComparison() {
   const compContainer = document.getElementById('comparisonContainer');
   compContainer.innerHTML = '';
   modalImages = [];
+
+  const promises = [];
+
   selectedOrder.forEach(brand => {
     if (brand === "UnitedAthle") {
       selectedUnitedIndices.forEach(i => {
-        const src = `images/UnitedAthle/${selectedGender}/${selectedGarment}/${selectedHeight}/${sizes[i]}_${selectedHeight}.png`;
+        const base = `images/UnitedAthle/${selectedGender}/${selectedGarment}/${selectedHeight}/${sizes[i]}_${selectedHeight}`;
         const alt = `${selectedHeight}cm ${sizes[i]} (${brand})`;
-        modalImages.push({ src, alt });
+        promises.push(resolveImagePath(base).then(src => ({ src, alt })));
       });
     } else if (brand === "GILDAN") {
       selectedGildanIndices.forEach(i => {
-        const src = `images/GILDAN/${selectedGender}/${selectedGarment}/${selectedHeight}/${sizes[i]}_${selectedHeight}.png`;
+        const base = `images/GILDAN/${selectedGender}/${selectedGarment}/${selectedHeight}/${sizes[i]}_${selectedHeight}`;
         const alt = `${selectedHeight}cm ${sizes[i]} (${brand})`;
-        modalImages.push({ src, alt });
+        promises.push(resolveImagePath(base).then(src => ({ src, alt })));
       });
     }
   });
+
+  modalImages = await Promise.all(promises);
+
   if (modalImages.length > 0) {
     compContainer.style.display = 'flex';
     modalImages.forEach((imgInfo, idx) => {
