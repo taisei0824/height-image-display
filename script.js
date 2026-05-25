@@ -1,186 +1,191 @@
-// =============================================
-// 身長オプション
-// 身長を追加・変更する場合はここを編集
-// =============================================
+// サイズの配列
+const sizes = ['S', 'M', 'L', 'XL'];
 const heightOptions = {
   male: {
     tshirt: ['165', '169', '173', '179'],
-    longT: [],
     sweat: []
   },
   female: {
     tshirt: ['157', '162', '166'],
-    longT: [],
     sweat: ['157']
   }
 };
 
-// =============================================
-// サイズの配列
-// サイズを変更する場合はここを編集
-// =============================================
-const sizes = ['S', 'M', 'L', 'XL'];
-
-// =============================================
-// 状態管理
-// =============================================
+// 選択状態を保持する変数
 let selectedGender = null;
 let selectedGarment = null;
 let selectedHeight = null;
+// 各ブランドで選択されたサイズのインデックス（両ブランド合わせて合計2つまで選択可能）
 let selectedUnitedIndices = [];
 let selectedGildanIndices = [];
+// 選択中のブランド（表示順序用）
 let selectedOrder = [];
+
+// モーダル用変数（比較用の画像リスト）
 let modalImages = [];
 let modalCurrentIndex = 0;
 
-// =============================================
-// 性別選択
-// =============================================
-document.querySelectorAll('input[name="gender"]').forEach(radio => {
-  radio.addEventListener('change', () => {
-    selectedGender = radio.value;
-
-    // アイテム選択を表示・リセット
-    document.getElementById('garmentContainer').style.display = 'block';
-    document.querySelectorAll('input[name="garment"]').forEach(r => r.checked = false);
-    selectedGarment = null;
-
-    // 以降をリセット
-    document.getElementById('heightContainer').style.display = 'none';
-    document.getElementById('heightButtons').innerHTML = '';
-    document.getElementById('brandContainer').style.display = 'none';
-    document.getElementById('comparisonContainer').style.display = 'none';
-    clearSizeSelections();
-
-    scrollToElement('garmentContainer');
-  });
-});
-
-// =============================================
-// 着用アイテム選択
-// =============================================
-document.querySelectorAll('input[name="garment"]').forEach(radio => {
-  radio.addEventListener('change', () => {
-    selectedGarment = radio.value;
-
-    const heights = heightOptions[selectedGender]?.[selectedGarment] ?? [];
-
-    if (heights.length > 0) {
-      document.getElementById('heightContainer').style.display = 'block';
-      buildHeightButtons(heights);
-    } else {
-      document.getElementById('heightContainer').style.display = 'none';
-      document.getElementById('heightButtons').innerHTML = '';
-    }
-
-    // 以降をリセット
-    document.getElementById('brandContainer').style.display = 'none';
-    document.getElementById('comparisonContainer').style.display = 'none';
-    clearSizeSelections();
-
-    scrollToElement('heightContainer');
-  });
-});
-
-// =============================================
-// 身長ボタンを動的に生成
-// =============================================
-function buildHeightButtons(heights) {
-  const container = document.getElementById('heightButtons');
-  container.innerHTML = '';
-
-  heights.forEach(height => {
-    const btn = document.createElement('button');
-    btn.className = 'size-btn';
-    btn.textContent = `${height}cm`;
-    btn.dataset.height = height;
-
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#heightButtons .size-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      selectedHeight = height;
-
-      document.getElementById('brandContainer').style.display = 'block';
-      document.getElementById('comparisonContainer').style.display = 'none';
-      clearSizeSelections();
-      buildBrandButtons();
-
-      scrollToElement('brandContainer');
-    });
-
-    container.appendChild(btn);
-  });
-}
-
-// =============================================
-// ブランド別サイズボタンを生成
-// =============================================
-function buildBrandButtons() {
-  buildSizeButtons('unitedAthleButtons', 'UnitedAthle', selectedUnitedIndices);
-  buildSizeButtons('gildanButtons', 'GILDAN', selectedGildanIndices);
-}
-
-function buildSizeButtons(containerId, brand, selectedIndices) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-
-  sizes.forEach((size, index) => {
-    const btn = document.createElement('button');
-    btn.className = 'size-btn';
-    btn.textContent = size;
-
-    btn.addEventListener('click', () => {
-      if (btn.classList.contains('selected')) {
-        btn.classList.remove('selected');
-        if (brand === 'UnitedAthle') {
-          selectedUnitedIndices = selectedUnitedIndices.filter(i => i !== index);
-        } else {
-          selectedGildanIndices = selectedGildanIndices.filter(i => i !== index);
-        }
-      } else {
-        const total = selectedUnitedIndices.length + selectedGildanIndices.length;
-        if (total >= 2) {
-          clearSizeSelections();
-        }
-        btn.classList.add('selected');
-        if (brand === 'UnitedAthle') {
-          selectedUnitedIndices.push(index);
-        } else {
-          selectedGildanIndices.push(index);
-        }
-      }
-
-      updateSelectedOrder();
-      updateComparison();
-    });
-
-    container.appendChild(btn);
-  });
-}
-
-// =============================================
-// サイズ選択をすべてクリア
-// =============================================
+// --- すべてのサイズ選択状態をクリアする ---
 function clearSizeSelections() {
-  document.querySelectorAll('#unitedAthleButtons .size-btn').forEach(btn => btn.classList.remove('selected'));
-  document.querySelectorAll('#gildanButtons .size-btn').forEach(btn => btn.classList.remove('selected'));
+  document.querySelectorAll('#unitedAthleButtons button').forEach(btn => btn.classList.remove('selected'));
+  document.querySelectorAll('#gildanButtons button').forEach(btn => btn.classList.remove('selected'));
   selectedUnitedIndices = [];
   selectedGildanIndices = [];
   selectedOrder = [];
 }
 
-// =============================================
-// 選択ブランド順序を更新
-// =============================================
+// --- 選択中のブランド順序を更新 ---
 function updateSelectedOrder() {
   selectedOrder = [];
-  if (selectedUnitedIndices.length > 0) selectedOrder.push('UnitedAthle');
-  if (selectedGildanIndices.length > 0) selectedOrder.push('GILDAN');
+  if (selectedUnitedIndices.length > 0) selectedOrder.push("UnitedAthle");
+  if (selectedGildanIndices.length > 0) selectedOrder.push("GILDAN");
 }
 
-// =============================================
-// 画像拡張子を解決（.png / .PNG）
-// =============================================
+// --- 性別選択 ---
+document.querySelectorAll('#genderContainer .button-group button').forEach(button => {
+  button.addEventListener('click', () => {
+    // 性別ボタンの選択状態を更新
+    document.querySelectorAll('#genderContainer .button-group button').forEach(btn => btn.classList.remove('selected'));
+    button.classList.add('selected');
+    selectedGender = button.getAttribute('data-gender');
+
+    // ガーメント（着用アイテム）選択エリアを表示しつつリセット
+    document.getElementById('garmentContainer').style.display = 'block';
+    document.querySelectorAll('#garmentContainer .button-group button').forEach(btn => btn.classList.remove('selected'));
+    selectedGarment = null;
+    
+    // 身長選択状態のリセット（身長文字とボタンも消去）
+    selectedHeight = null;
+    document.getElementById('heightInstruction').style.display = 'none';
+    document.getElementById('heightButtons').innerHTML = '';
+
+    // 比較・ブランド選択状態のリセット
+    document.getElementById('comparePrompt').style.display = 'none';
+    document.getElementById('brandContainer').style.display = 'none';
+    document.getElementById('comparisonContainer').style.display = 'none';
+    clearSizeSelections();
+  });
+});
+
+
+
+// --- 着用アイテム（ガーメント）選択 ---
+document.querySelectorAll('#garmentContainer .button-group button').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('#garmentContainer .button-group button').forEach(btn => btn.classList.remove('selected'));
+    button.classList.add('selected');
+    selectedGarment = button.getAttribute('data-garment');
+
+    // 身長選択：選択された性別・ガーメントに対応する身長があれば表示する
+    if (
+      selectedGender &&
+      selectedGarment &&
+      heightOptions[selectedGender] &&
+      heightOptions[selectedGender][selectedGarment] &&
+      heightOptions[selectedGender][selectedGarment].length > 0
+    ) {
+      document.getElementById('heightInstruction').style.display = 'block';
+      updateHeightButtons();
+    } else {
+      // 利用可能な身長がなければ非表示
+      document.getElementById('heightInstruction').style.display = 'none';
+      document.getElementById('heightButtons').innerHTML = '';
+    }
+
+    // 身長選択後の比較・ブランド表示をリセット
+    document.getElementById('comparePrompt').style.display = 'none';
+    document.getElementById('brandContainer').style.display = 'none';
+    document.getElementById('comparisonContainer').style.display = 'none';
+    clearSizeSelections();
+  });
+});
+
+// --- 身長ボタンを動的に生成 ---
+function updateHeightButtons() {
+  const container = document.getElementById('heightButtons');
+  container.innerHTML = '';
+  if (!selectedGender || !selectedGarment) return;
+  const availableHeights = (heightOptions[selectedGender] && heightOptions[selectedGender][selectedGarment]) 
+                           ? heightOptions[selectedGender][selectedGarment] 
+                           : [];
+  availableHeights.forEach(height => {
+    const btn = document.createElement('button');
+    btn.textContent = `${height}cm`;
+    btn.setAttribute('data-height', height);
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#heightButtons button').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedHeight = height;
+      // 身長選択後、比較用の見出しとブランドセクションを表示
+      document.getElementById('comparePrompt').style.display = 'block';
+      document.getElementById('brandContainer').style.display = 'block';
+      clearSizeSelections();
+      updateBrandButtons();
+      document.getElementById('comparisonContainer').style.display = 'none';
+    });
+    container.appendChild(btn);
+  });
+}
+
+// --- ブランド別のサイズボタンを生成 ---
+function updateBrandButtons() {
+  // United Athle
+  const uaContainer = document.getElementById('unitedAthleButtons');
+  uaContainer.innerHTML = '';
+  sizes.forEach((size, index) => {
+    const btn = document.createElement('button');
+    btn.textContent = size;
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('selected')) {
+        btn.classList.remove('selected');
+        selectedUnitedIndices = selectedUnitedIndices.filter(i => i !== index);
+      } else {
+        let totalSelected = selectedUnitedIndices.length + selectedGildanIndices.length;
+        if (totalSelected < 2) {
+          btn.classList.add('selected');
+          selectedUnitedIndices.push(index);
+        } else {
+          clearSizeSelections();
+          btn.classList.add('selected');
+          selectedUnitedIndices.push(index);
+        }
+      }
+      updateSelectedOrder();
+      updateComparison();
+    });
+    uaContainer.appendChild(btn);
+  });
+  
+  // GILDAN
+  const gContainer = document.getElementById('gildanButtons');
+  gContainer.innerHTML = '';
+  sizes.forEach((size, index) => {
+    const btn = document.createElement('button');
+    btn.textContent = size;
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('selected')) {
+        btn.classList.remove('selected');
+        selectedGildanIndices = selectedGildanIndices.filter(i => i !== index);
+      } else {
+        let totalSelected = selectedUnitedIndices.length + selectedGildanIndices.length;
+        if (totalSelected < 2) {
+          btn.classList.add('selected');
+          selectedGildanIndices.push(index);
+        } else {
+          clearSizeSelections();
+          btn.classList.add('selected');
+          selectedGildanIndices.push(index);
+        }
+      }
+      updateSelectedOrder();
+      updateComparison();
+    });
+    gContainer.appendChild(btn);
+  });
+}
+
+// --- 比較表示領域の更新 ---
+// --- 画像拡張子を解決する（.png / .PNG どちらでも対応）---
 async function resolveImagePath(basePath) {
   const pngPath = basePath + '.png';
   try {
@@ -190,30 +195,34 @@ async function resolveImagePath(basePath) {
   return basePath + '.PNG';
 }
 
-// =============================================
-// 比較画像を更新
-// =============================================
+// --- 比較表示領域の更新 ---
 async function updateComparison() {
   const compContainer = document.getElementById('comparisonContainer');
-  const imageContainer = document.getElementById('comparisonImages');
-  imageContainer.innerHTML = '';
+  compContainer.innerHTML = '';
   modalImages = [];
 
   const promises = [];
 
   selectedOrder.forEach(brand => {
-    const indices = brand === 'UnitedAthle' ? selectedUnitedIndices : selectedGildanIndices;
-    indices.forEach(i => {
-      const base = `images/${brand}/${selectedGender}/${selectedGarment}/${selectedHeight}/${sizes[i]}_${selectedHeight}`;
-      const alt = `${selectedHeight}cm ${sizes[i]} (${brand})`;
-      promises.push(resolveImagePath(base).then(src => ({ src, alt })));
-    });
+    if (brand === "UnitedAthle") {
+      selectedUnitedIndices.forEach(i => {
+        const base = `images/UnitedAthle/${selectedGender}/${selectedGarment}/${selectedHeight}/${sizes[i]}_${selectedHeight}`;
+        const alt = `${selectedHeight}cm ${sizes[i]} (${brand})`;
+        promises.push(resolveImagePath(base).then(src => ({ src, alt })));
+      });
+    } else if (brand === "GILDAN") {
+      selectedGildanIndices.forEach(i => {
+        const base = `images/GILDAN/${selectedGender}/${selectedGarment}/${selectedHeight}/${sizes[i]}_${selectedHeight}`;
+        const alt = `${selectedHeight}cm ${sizes[i]} (${brand})`;
+        promises.push(resolveImagePath(base).then(src => ({ src, alt })));
+      });
+    }
   });
 
   modalImages = await Promise.all(promises);
 
   if (modalImages.length > 0) {
-    compContainer.style.display = 'block';
+    compContainer.style.display = 'flex';
     modalImages.forEach((imgInfo, idx) => {
       const img = document.createElement('img');
       img.src = imgInfo.src;
@@ -222,17 +231,14 @@ async function updateComparison() {
         modalCurrentIndex = idx;
         openModal();
       });
-      imageContainer.appendChild(img);
+      compContainer.appendChild(img);
     });
-    scrollToElement('comparisonContainer');
   } else {
     compContainer.style.display = 'none';
   }
 }
 
-// =============================================
-// モーダル
-// =============================================
+// --- モーダル表示関連 ---
 function openModal() {
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modalImg');
@@ -251,76 +257,69 @@ function updateModalImage() {
   modalImg.alt = modalImages[modalCurrentIndex].alt;
 }
 
-document.getElementById('closeModal').addEventListener('click', closeModal);
-
-document.getElementById('prevBtn').addEventListener('click', () => {
+function showPrev() {
   modalCurrentIndex = (modalCurrentIndex - 1 + modalImages.length) % modalImages.length;
   updateModalImage();
-});
-
-document.getElementById('nextBtn').addEventListener('click', () => {
-  modalCurrentIndex = (modalCurrentIndex + 1) % modalImages.length;
-  updateModalImage();
-});
-
-window.addEventListener('click', (event) => {
-  if (event.target === document.getElementById('modal')) closeModal();
-});
-
-// =============================================
-// スムーズスクロール
-// =============================================
-function scrollToElement(id) {
-  const el = document.getElementById(id);
-  if (el) {
-    setTimeout(() => {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
-  }
 }
 
-// =============================================
-// ナビゲーションボタン
-// =============================================
-document.getElementById('homeButton').addEventListener('click', () => {
-  window.location.href = 'https://kawarimono.kawaiishop.jp/';
-});
+function showNext() {
+  modalCurrentIndex = (modalCurrentIndex + 1) % modalImages.length;
+  updateModalImage();
+}
 
-document.getElementById('backButton').addEventListener('click', () => {
-  if (window.history.length > 1) {
-    window.history.back();
-  } else {
-    window.location.href = 'https://kawarimono.kawaiishop.jp/';
+document.getElementById('closeModal').addEventListener('click', closeModal);
+document.getElementById('prevBtn').addEventListener('click', showPrev);
+document.getElementById('nextBtn').addEventListener('click', showNext);
+
+window.addEventListener('click', (event) => {
+  const modal = document.getElementById('modal');
+  if (event.target === modal) {
+    closeModal();
   }
 });
 
-// =============================================
-// URLパラメータからの復元
-// =============================================
+// --- URLパラメータからの復元（任意） ---
 window.addEventListener('load', () => {
   const params = new URLSearchParams(window.location.search);
   const gender = params.get('gender');
   const garment = params.get('garment');
   const height = params.get('height');
-
   if (gender) {
-    const radio = document.querySelector(`input[name="gender"][value="${gender}"]`);
-    if (radio) {
-      radio.checked = true;
-      radio.dispatchEvent(new Event('change'));
-    }
+    selectedGender = gender;
+    const genderBtn = document.querySelector(`#genderContainer button[data-gender="${gender}"]`);
+    if (genderBtn) genderBtn.classList.add('selected');
+    document.getElementById('garmentContainer').style.display = 'block';
   }
   if (garment) {
-    const radio = document.querySelector(`input[name="garment"][value="${garment}"]`);
-    if (radio && !radio.disabled) {
-      radio.checked = true;
-      radio.dispatchEvent(new Event('change'));
+    selectedGarment = garment;
+    const garmentBtn = document.querySelector(`#garmentContainer button[data-garment="${garment}"]`);
+    if (garmentBtn) garmentBtn.classList.add('selected');
+    if (selectedGender && selectedGarment && heightOptions[selectedGender] && heightOptions[selectedGender][selectedGarment] && heightOptions[selectedGender][selectedGarment].length > 0) {
+      document.getElementById('heightInstruction').style.display = 'block';
+      updateHeightButtons();
     }
   }
   if (height) {
-    setTimeout(() => {
-      const btn = document.querySelector(`#heightButtons .size-btn[data-height="${height}"]`);
-      if (btn) btn.click();
-    }, 100);
+    selectedHeight = height;
+    const heightBtn = document.querySelector(`#heightButtons button[data-height="${height}"]`);
+    if (heightBtn) heightBtn.classList.add('selected');
+    document.getElementById('comparePrompt').style.display = 'block';
+    document.getElementById('brandContainer').style.display = 'block';
+    updateBrandButtons();
+  }
+});
+
+// トップページに戻るボタンの処理
+document.getElementById('homeButton').addEventListener('click', function() {
+  window.location.href = 'https://kawarimono.kawaiishop.jp/';
+});
+
+// 戻るボタンのクリックイベント
+document.getElementById('backButton').addEventListener('click', function() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    // 履歴が無い場合のフォールバックとして指定の URL に遷移させる場合
+    window.location.href = 'https://kawarimono.kawaiishop.jp/'; 
   }
 });
