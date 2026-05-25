@@ -286,27 +286,6 @@ document.getElementById('homeButton').addEventListener('click', () => {
   window.location.href = 'https://d1nvne-if.myshopify.com/collections/商品';
 });
 
-// 戻るボタンのクリックイベント
-document.getElementById('backButton').addEventListener('click', function() {
-  const params = new URLSearchParams(window.location.search);
-  const backUrl = params.get('back');
-  const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
-
-  if (backUrl) {
-    if (isMobile) {
-      // スマホ：タブを閉じるだけ（効かなければ何もしない）
-      window.close();
-    } else {
-      // PC：タブを閉じる
-      window.close();
-    }
-  } else if (window.history.length > 1) {
-    window.history.back();
-  } else {
-    window.location.href = 'https://d1nvne-if.myshopify.com/collections/%E5%95%86%E5%93%81';
-  }
-});
-
 // =============================================
 // URLパラメータからの復元
 // =============================================
