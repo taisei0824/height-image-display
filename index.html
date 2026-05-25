@@ -2,131 +2,207 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>身長別サイズ比較</title>
-  <link rel="stylesheet" href="style.css">
+  <title>性別・着用アイテム・身長とサイズの画像表示＆比較</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 150px;
+      font-size: 18px;
+      text-align: center;
+    }
+    .button-container {
+    display: flex;
+    justify-content: center; /* 横方向の中央揃え */
+    align-items: center;     /* 縦方向の中央揃え */
+    gap: 50px;               /* ボタン間の余白 */
+    margin: 20px 0;          /* コンテナ自体の上下マージン */
+  }
+     /* ボタンの大きさを調整 */
+    .button-container button {
+      font-size: 17px;        /* テキストサイズ */
+      padding: 15px 30px;     /* ボタン内の余白 */
+      border-radius: 8px;     /* 角の丸み */
+    }
+    .selector-container {
+      margin-bottom: 20px;
+    }
+    .selector-container h2 {
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+    .instruction {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 10px;
+      display: none;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .button-group button {
+      padding: 30px 60px;
+      font-size: 25px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      border-radius: 12px; /* 4px → 12px に変更 */
+    }
+    .button-group button.selected {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
+    .brand-section {
+      margin: 20px 0;
+    }
+    .brand-section h2 {
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+    .brand-section .button-group button {
+      padding: 20px 40px;
+      font-size: 20px;
+    }
+    #comparisonContainer {
+      margin-top: 30px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+    #comparisonContainer img {
+      width: 400px;
+      margin: 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    #comparisonContainer img:hover {
+      transform: scale(1.05);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      display: block;
+      max-width: 80%;
+      max-height: 80%;
+      margin: 5% auto;
+      border-radius: 8px;
+    }
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      background: rgba(0,0,0,0.5);
+      border: none;
+      font-size: 30px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    .nav-btn:hover {
+      background: rgba(0,0,0,0.8);
+    }
+    #prevBtn {
+      left: 20px;
+    }
+    #nextBtn {
+      right: 20px;
+    }
+    .button-group button.coming-soon {
+      text-decoration: line-through;
+      color: #8a8a8a;
+    }
+  </style>
 </head>
 <body>
-
-  <div class="container">
-
-    <header class="header">
-      <p class="header__sub">SIZE GUIDE</p>
-      <h1 class="header__title">着用画像比較</h1>
-      <p class="header__desc">身長・サイズを選んで着用イメージを確認できます。<br>2つまで選択して比較できます。</p>
-    </header>
-
-    <!-- ナビゲーションボタン -->
-    <div class="nav-links">
-      <button class="nav-link" id="homeButton">トップページへ</button>
-      <button class="nav-link" id="backButton">前のページへ</button>
-    </div>
-
-    <div class="notice">
-      ⚠️ まだ画像少ないです&lt;(_ _)&gt; これからガンガン増やします
-    </div>
-
-    <!-- =============================================
-         性別選択
-    ============================================= -->
-    <div class="step" id="genderContainer">
-      <h2 class="step__title"><span class="step__num">01</span>性別</h2>
-      <div class="option-grid option-grid--2">
-        <label class="option-card">
-          <input type="radio" name="gender" value="male">
-          <div class="option-card__inner">
-            <div class="option-card__check">✓</div>
-            <p class="option-card__label">男性</p>
-          </div>
-        </label>
-        <label class="option-card">
-          <input type="radio" name="gender" value="female">
-          <div class="option-card__inner">
-            <div class="option-card__check">✓</div>
-            <p class="option-card__label">女性</p>
-          </div>
-        </label>
-      </div>
-    </div>
-
-    <!-- =============================================
-         着用アイテム選択
-    ============================================= -->
-    <div class="step" id="garmentContainer" style="display:none;">
-      <h2 class="step__title"><span class="step__num">02</span>着用アイテム</h2>
-      <div class="option-grid option-grid--3">
-        <label class="option-card">
-          <input type="radio" name="garment" value="tshirt">
-          <div class="option-card__inner">
-            <div class="option-card__check">✓</div>
-            <p class="option-card__label">Tシャツ</p>
-          </div>
-        </label>
-        <!-- coming-soonアイテム：追加時はdisabledとcoming-soonクラスを削除 -->
-        <label class="option-card option-card--disabled">
-          <input type="radio" name="garment" value="longT" disabled>
-          <div class="option-card__inner">
-            <div class="option-card__check">✓</div>
-            <p class="option-card__label option-card__label--soon">ロンT</p>
-            <p class="option-card__soon">coming soon</p>
-          </div>
-        </label>
-        <label class="option-card option-card--disabled">
-          <input type="radio" name="garment" value="sweat" disabled>
-          <div class="option-card__inner">
-            <div class="option-card__check">✓</div>
-            <p class="option-card__label option-card__label--soon">スウェット</p>
-            <p class="option-card__soon">coming soon</p>
-          </div>
-        </label>
-      </div>
-    </div>
-
-    <!-- =============================================
-         身長選択
-    ============================================= -->
-    <div class="step" id="heightContainer" style="display:none;">
-      <h2 class="step__title"><span class="step__num">03</span>身長</h2>
-      <div class="option-grid option-grid--flex" id="heightButtons">
-        <!-- JSで動的に生成 -->
-      </div>
-    </div>
-
-    <!-- =============================================
-         ブランド・サイズ選択
-    ============================================= -->
-    <div class="step" id="brandContainer" style="display:none;">
-      <h2 class="step__title"><span class="step__num">04</span>サイズを選択</h2>
-      <p class="step__note">2つまで選択して比較できます</p>
-
-      <div class="brand-section">
-        <p class="brand-label">United Athle</p>
-        <div class="option-grid option-grid--flex" id="unitedAthleButtons"></div>
-      </div>
-
-      <div class="brand-section">
-        <p class="brand-label">GILDAN</p>
-        <div class="option-grid option-grid--flex" id="gildanButtons"></div>
-      </div>
-    </div>
-
-    <!-- =============================================
-         比較画像表示エリア
-    ============================================= -->
-    <div id="comparisonContainer" style="display:none;">
-      <div class="comparison-images" id="comparisonImages"></div>
-    </div>
-
+  <div class="button-container">
+     <button id="homeButton">トップページへ戻る</button>
+     <button id="backButton">前のページへ戻る</button>
   </div>
+  <h1>表示したい着用画像について以下を選択してください</h1>
+  <h3>&#x26a0;まだ画像少ないです&lt;(_ _)&gt;</h3>
+  <h4>これからガンガン増やします</h4>
+  
+  <!-- 性別選択 -->
+  <div class="selector-container" id="genderContainer">
+    <h2>性別</h2>
+    <div class="button-group">
+      <button data-gender="male">男性</button>
+      <button data-gender="female">女性</button>
+    </div>
+  </div>
+
+  <!-- 着用アイテム選択（性別選択後に表示） -->
+  <div class="selector-container" id="garmentContainer" style="display:none;">
+    <h2>着用アイテム</h2>
+    <div class="button-group">
+      <button data-garment="tshirt">Tシャツ</button>
+      <button data-garment="longT" class="coming-soon" disabled>ロンT</button>
+      <button data-garment="sweat" class="coming-soon" disabled>スウェット</button>
+    </div>
+  </div>
+  
+  <!-- 身長選択 -->
+  <div class="selector-container" id="heightContainer">
+    <div id="heightInstruction" class="instruction">
+      <h2>身長</h2>
+    </div>
+    <div class="button-group" id="heightButtons">
+      <!-- 身長ボタンはJSで追加 -->
+    </div>
+  </div>
+
+  <!-- 「2つ選択して比較」表示 -->
+  <div id="comparePrompt" style="display:none;">
+    <h1>2つ選択して比較</h1>
+  </div>
+
+  <!-- ブランドごとのサイズ選択セクション -->
+  <div id="brandContainer" style="display:none;">
+    <div class="brand-section" id="unitedAthleSection">
+      <h2>United Athle</h2>
+      <div class="button-group" id="unitedAthleButtons">
+        <!-- サイズボタンはJSで追加 -->
+      </div>
+    </div>
+    <div class="brand-section" id="gildanSection">
+      <h2>GILDAN</h2>
+      <div class="button-group" id="gildanButtons">
+        <!-- サイズボタンはJSで追加 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 比較画像表示エリア -->
+  <div id="comparisonContainer" style="display:none;"></div>
 
   <!-- モーダル（拡大表示用） -->
   <div id="modal" class="modal">
-    <button id="closeModal" class="modal__close">&times;</button>
-    <button id="prevBtn" class="modal__nav modal__nav--prev">&#10094;</button>
-    <img id="modalImg" class="modal__img" src="" alt="">
-    <button id="nextBtn" class="modal__nav modal__nav--next">&#10095;</button>
+    <span id="closeModal" class="close">&times;</span>
+    <button id="prevBtn" class="nav-btn">&#10094;</button>
+    <img id="modalImg" class="modal-content" src="" alt="">
+    <button id="nextBtn" class="nav-btn">&#10095;</button>
   </div>
-
+  
   <script src="script.js"></script>
 </body>
 </html>
