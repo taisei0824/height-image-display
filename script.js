@@ -290,14 +290,16 @@ document.getElementById('homeButton').addEventListener('click', () => {
 document.getElementById('backButton').addEventListener('click', function() {
   const params = new URLSearchParams(window.location.search);
   const backUrl = params.get('back');
-  
+  const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+
   if (backUrl) {
-    // 新しいタブで開かれた場合はタブを閉じる
-    window.close();
-    // タブを閉じられなかった場合（直接アクセスなど）はURLに遷移
-    setTimeout(() => {
-      window.location.href = backUrl;
-    }, 300);
+    if (isMobile) {
+      // スマホ：タブを閉じるだけ（効かなければ何もしない）
+      window.close();
+    } else {
+      // PC：タブを閉じる
+      window.close();
+    }
   } else if (window.history.length > 1) {
     window.history.back();
   } else {
