@@ -51,8 +51,6 @@ document.querySelectorAll('input[name="gender"]').forEach(radio => {
     document.getElementById('brandContainer').style.display = 'none';
     document.getElementById('comparisonContainer').style.display = 'none';
     clearSizeSelections();
-
-    scrollToElement('garmentContainer');
   });
 });
 
