@@ -301,7 +301,7 @@ document.getElementById('backButton').addEventListener('click', function() {
   } else if (window.history.length > 1) {
     window.history.back();
   } else {
-    window.location.href = 'https://kawarimono.kawaiishop.jp/';
+    window.location.href = 'https://d1nvne-if.myshopify.com/collections/%E5%95%86%E5%93%81';
   }
 });
 
