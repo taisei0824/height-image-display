@@ -222,7 +222,6 @@ async function updateComparison() {
       });
       imageContainer.appendChild(img);
     });
-    scrollToElement('comparisonContainer');
   } else {
     compContainer.style.display = 'none';
   }
