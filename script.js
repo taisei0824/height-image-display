@@ -290,8 +290,14 @@ document.getElementById('homeButton').addEventListener('click', () => {
 document.getElementById('backButton').addEventListener('click', function() {
   const params = new URLSearchParams(window.location.search);
   const backUrl = params.get('back');
+  
   if (backUrl) {
-    window.location.href = backUrl;
+    // 新しいタブで開かれた場合はタブを閉じる
+    window.close();
+    // タブを閉じられなかった場合（直接アクセスなど）はURLに遷移
+    setTimeout(() => {
+      window.location.href = backUrl;
+    }, 300);
   } else if (window.history.length > 1) {
     window.history.back();
   } else {
