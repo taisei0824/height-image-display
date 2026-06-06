@@ -139,7 +139,20 @@ function buildSizeButtons(containerId, brand, selectedIndices) {
         const total = selectedUnitedIndices.length + selectedGildanIndices.length;
         if (total >= 2) {
           clearSizeSelections();
-          buildBrandButtons(); 
+          buildBrandButtons();
+          // buildBrandButtonsで新しいボタンが生成されるので
+          // 新しいボタンを取得して選択状態にする
+          const newContainer = document.getElementById(containerId);
+          const newBtns = newContainer.querySelectorAll('.size-btn');
+          newBtns[index].classList.add('selected');
+          if (brand === 'UnitedAthle') {
+            selectedUnitedIndices.push(index);
+          } else {
+            selectedGildanIndices.push(index);
+          }
+          updateSelectedOrder();
+          updateComparison();
+          return; // ← ここでreturnして以降の処理をスキップ
         }
         btn.classList.add('selected');
         if (brand === 'UnitedAthle') {
