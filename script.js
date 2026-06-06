@@ -152,7 +152,7 @@ function buildSizeButtons(containerId, brand, selectedIndices) {
       updateSelectedOrder();
       updateComparison();
     });
-    
+
     container.appendChild(btn);
   });
 }
@@ -282,10 +282,6 @@ function scrollToElement(id) {
 // =============================================
 document.getElementById('homeButton').addEventListener('click', () => {
   window.location.href = 'https://d1nvne-if.myshopify.com/collections/商品';
-});
-
-document.getElementById('backButton').addEventListener('click', () => {
-  window.history.back();
 });
 
 // =============================================
