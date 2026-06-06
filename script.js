@@ -149,14 +149,10 @@ function buildSizeButtons(containerId, brand, selectedIndices) {
         }
       }
 
-  updateSelectedOrder();
-  updateComparison();
-});
-
       updateSelectedOrder();
       updateComparison();
     });
-
+    
     container.appendChild(btn);
   });
 }
