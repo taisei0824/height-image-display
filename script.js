@@ -139,6 +139,7 @@ function buildSizeButtons(containerId, brand, selectedIndices) {
         const total = selectedUnitedIndices.length + selectedGildanIndices.length;
         if (total >= 2) {
           clearSizeSelections();
+          buildBrandButtons(); 
         }
         btn.classList.add('selected');
         if (brand === 'UnitedAthle') {
@@ -147,6 +148,10 @@ function buildSizeButtons(containerId, brand, selectedIndices) {
           selectedGildanIndices.push(index);
         }
       }
+
+  updateSelectedOrder();
+  updateComparison();
+});
 
       updateSelectedOrder();
       updateComparison();
