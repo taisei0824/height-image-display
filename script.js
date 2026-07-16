@@ -32,6 +32,7 @@ let selectedGildanIndices = [];
 let selectedOrder = [];
 let modalImages = [];
 let modalCurrentIndex = 0;
+let comparisonUpdateToken = 0; // 連続クリック時の古い非同期処理を無効化するためのトークン
 
 // =============================================
 // 性別選択
@@ -206,10 +207,15 @@ async function resolveImagePath(basePath) {
 // 比較画像を更新
 // =============================================
 async function updateComparison() {
+  // このタイミングで発行したトークンを記録。
+  // 通信待ちの間に別の選択がされて updateComparison が再度呼ばれると
+  // comparisonUpdateToken が更新されるため、後から古い呼び出しの結果が
+  // 割り込んで表示される（3枚表示バグ）のを防ぐ。
+  const myToken = ++comparisonUpdateToken;
+
   const compContainer = document.getElementById('comparisonContainer');
   const imageContainer = document.getElementById('comparisonImages');
   imageContainer.innerHTML = '';
-  modalImages = [];
 
   const promises = [];
 
@@ -222,7 +228,15 @@ async function updateComparison() {
     });
   });
 
-  modalImages = await Promise.all(promises);
+  const resolvedImages = await Promise.all(promises);
+
+  // 待っている間に新しい呼び出しが発生していたら、この結果は古いので破棄する
+  if (myToken !== comparisonUpdateToken) return;
+
+  modalImages = resolvedImages;
+
+  // 描画直前にもう一度クリアしてから追加する（多重追加の保険）
+  imageContainer.innerHTML = '';
 
   if (modalImages.length > 0) {
     compContainer.style.display = 'block';
